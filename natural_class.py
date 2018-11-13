@@ -24,5 +24,3 @@ for feature in features:
         pass
     else:
         print("Not a set")
-
-#THE END
