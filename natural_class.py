@@ -1,12 +1,9 @@
 def is_set(cards):  
   features = ["shading", "color", "number", "shape"]
   for feature in features:
-      values = []
+      unique_values = set()
       for card in cards:
-          values.append(card[feature])
-      #print(values)
-      if len(set(values))==len(values) or len(set(values))==1:
-          pass
-      else:
-          return False
+          unique_values.add(card[feature])
+      if not (len(unique_values)==len(cards) or len(unique_values)==1):
+          return False              
   return True
