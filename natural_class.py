@@ -26,12 +26,12 @@ class Game:
                 self.deck.cards_in_play.remove(card)
             # - track player score            
             # TODO: What if there's more than one player?
-                self.players[0].change_score(self.SET_LENGTH)
+            self.players[0].change_score(self.SET_LENGTH)
             # - deal cards
             # TODO?     - if >=3 cards in deck, deal 3
             # - if <3 cards in deck, deal number in deck
             # - if <3 cards in play area, end game
-                self.deck.deal(self.SET_LENGTH)                 
+            self.deck.deal(self.SET_LENGTH)                 
         else:    # - if incorrect:
             # - penalise player (track player score)
             self.players[0].change_score(-self.SET_LENGTH)
@@ -40,13 +40,14 @@ class Game:
         self.deck.deal(self.NUM_STARTING_CARDS)     # - deal 9 cards
         while True:    # - loop:
             #TODO: make cards look nicer!
-            print(self.deck.cards_in_play)
+            for i in range(len(self.deck.cards_in_play)):
+                print(str(i + 1) + '. ' + str(self.deck.cards_in_play[i]))
             #TODO: handle errors
-            does_set_exist = input("Is there a set? I need food. (Answer 'Y' for yes, 'N' for no.)")    # - user says whether there's a set                
+            does_set_exist = input("Is there a set? I need food. (Answer 'Y' for yes, 'N' for no.) ")    # - user says whether there's a set                
             if does_set_exist == "Y":
                 selected_indices = []
                 for _ in range(self.SET_LENGTH):
-                    selected_indices.append(int(input("Feed me a card. I'm so hungry!")))    # - if yes: evaluate chosen cards    
+                    selected_indices.append(int(input("Feed me a card. I'm so hungry! ")) - 1)    # - if yes: evaluate chosen cards    
                 selected_cards = []    
                 for integer in selected_indices:
                     selected_cards.append(self.deck.cards_in_play[integer])
@@ -105,8 +106,5 @@ class Card:
 
 
 if __name__ == "__main__":
-    d = Deck()
-    d.deal(12)
-    print(len(d.undealt_cards))
-    print(len(d.cards_in_play))
+    Game(Deck(), [Player(0, 'Tomo-Ross')]).play()
 

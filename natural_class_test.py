@@ -7,24 +7,12 @@ class TestClaimSet(unittest.TestCase):
         game = Game(Deck(), [Player(0, "Tomo-Ross")])
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('empty', 'red', 'diamond', '3'),
-                                   Card('striped', 'purple', 'swirl', '1'),
-                                   Card('filled', 'red', 'swirl', '3')]
+                                   Card('striped', 'purple', 'squiggle', '1'),
+                                   Card('filled', 'red', 'squiggle', '3')]
         old_cards_in_play = game.deck.cards_in_play[:]
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
-                                   Card('striped', 'red', 'swirl', '1'),
-                                   # Card('filled', 'purple', 'oval', '2'),
-                                   # Card('empty', 'purple', 'diamond', '3'),
-                                   # Card('striped', 'red', 'swirl', '1'),
-                                   # Card('filled', 'purple', 'oval', '2'),
-                                   # Card('empty', 'purple', 'diamond', '3'),
-                                   # Card('striped', 'red', 'swirl', '1'),
-                                   # Card('filled', 'purple', 'oval', '2'),
-                                   # Card('empty', 'purple', 'diamond', '3'),
-                                   # Card('striped', 'red', 'swirl', '1')
-                                   ]
-        #Why does undealt_cards have so many cards? Because it created an error when there were only 3.
-        #So let's see if this works.
+                                   Card('striped', 'red', 'squiggle', '1')]
         game.claim_set(old_cards_in_play[:3])
         self.assertNotEqual(set(old_cards_in_play), set(game.deck.cards_in_play))
 
@@ -33,24 +21,12 @@ class TestClaimSet(unittest.TestCase):
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('striped', 'red', 'oval', '3'),
                                    Card('filled', 'purple', 'oval', '1'),
-                                   Card('filled', 'red', 'swirl', '3')]
+                                   Card('filled', 'red', 'squiggle', '3')]
         old_cards_in_play = game.deck.cards_in_play[:]
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
-                                   Card('striped', 'red', 'swirl', '1'),
-                                   # Card('filled', 'purple', 'oval', '2'),
-                                   # Card('empty', 'purple', 'diamond', '3'),
-                                   # Card('striped', 'red', 'swirl', '1'),
-                                   # Card('filled', 'purple', 'oval', '2'),
-                                   # Card('empty', 'purple', 'diamond', '3'),
-                                   # Card('striped', 'red', 'swirl', '1'),
-                                   # Card('filled', 'purple', 'oval', '2'),
-                                   # Card('empty', 'purple', 'diamond', '3'),
-                                   # Card('striped', 'red', 'swirl', '1')
-                                   ]
-        #Why does undealt_cards have so many cards? Because it created an error when there were only 3.
-        #So let's see if this works.
-        game.claim_set(old_cards_in_play[0:3])
+                                   Card('striped', 'red', 'squiggle', '1')]
+        game.claim_set(old_cards_in_play[:3])
         self.assertEqual(set(old_cards_in_play), set(game.deck.cards_in_play))
 
 class TestIsSet(unittest.TestCase):
@@ -59,7 +35,7 @@ class TestIsSet(unittest.TestCase):
         cards = []
         cards.append(Card('filled', 'green', 'oval', '2'))
         cards.append(Card('empty', 'red', 'diamond', '3'))
-        cards.append(Card('striped', 'purple', 'swirl', '1'))
+        cards.append(Card('striped', 'purple', 'squiggle', '1'))
         self.assertTrue(is_set(cards))
 
     def test_allCards_sameValuesForAllFeatures_isSet(self):
@@ -94,7 +70,7 @@ class TestIsSet(unittest.TestCase):
         cards = []
         cards.append(Card('empty', 'green', 'oval', '1'))
         cards.append(Card('filled', 'red', 'oval', '3'))
-        cards.append(Card('filled', 'green', 'swirly', '1'))
+        cards.append(Card('filled', 'green', 'squiggle', '1'))
         self.assertFalse(is_set(cards))
 
 if __name__ == '__main__':
