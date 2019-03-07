@@ -16,7 +16,7 @@ class Game:
         #TODO: allow 'deck' to be omitted, in which case default deck is created
         self.deck = deck
         self.players = players
-        self.NUM_STARTING_CARDS = 9
+        self.NUM_STARTING_CARDS = 12
         self.SET_LENGTH = 3
 
     def claim_set(self, selected_cards):
@@ -31,13 +31,16 @@ class Game:
             # TODO?     - if >=3 cards in deck, deal 3
             # - if <3 cards in deck, deal number in deck
             # - if <3 cards in play area, end game
-            self.deck.deal(self.SET_LENGTH)                 
+            self.deal_limit(self.deck)                 
         else:    # - if incorrect:
             # - penalise player (track player score)
             self.players[0].change_score(-self.SET_LENGTH)
 
+    def deal_limit(self, deck):
+        self.deck.deal_number(max(self.NUM_STARTING_CARDS - len(self.deck.cards_in_play), 0))
+
     def play(self):
-        self.deck.deal(self.NUM_STARTING_CARDS)     # - deal 9 cards
+        self.deal_limit(self.deck)     # - deal 9 cards
         while True:    # - loop:
             #TODO: make cards look nicer!
             for i in range(len(self.deck.cards_in_play)):
@@ -54,7 +57,7 @@ class Game:
                 self.claim_set(selected_cards)
             #finish this
             else:    # - if no:
-                self.deck.deal(self.SET_LENGTH)     # - add 3 cards
+                self.deck.deal_number(self.SET_LENGTH)     # - add 3 cards
                     # - if no cards to add, end game and declare winner
 
 class Deck:
@@ -72,8 +75,8 @@ class Deck:
         shuffle(self.undealt_cards)
         self.cards_in_play = []
 
-    def deal(self, number_of_cards):
-        for _ in range(number_of_cards):
+    def deal_number(self, number_of_cards):
+        for _ in range(min(number_of_cards, len(self.undealt_cards))):
             self.cards_in_play.append(self.undealt_cards.pop())
 
 class Player:
