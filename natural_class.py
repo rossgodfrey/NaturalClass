@@ -28,9 +28,7 @@ class Game:
             # TODO: What if there's more than one player?
             self.players[0].change_score(self.SET_LENGTH)
             # - deal cards
-            # TODO?     - if >=3 cards in deck, deal 3
-            # - if <3 cards in deck, deal number in deck
-            # - if <3 cards in play area, end game
+            # TODO?  - if < 3 cards in play area, end game
             self.deal_limit(self.deck)                 
         else:    # - if incorrect:
             # - penalise player (track player score)
@@ -46,8 +44,8 @@ class Game:
             for i in range(len(self.deck.cards_in_play)):
                 print(str(i + 1) + '. ' + str(self.deck.cards_in_play[i]))
             #TODO: handle errors
-            does_set_exist = input("Is there a set? I need food. (Answer 'Y' for yes, 'N' for no.) ")    # - user says whether there's a set                
-            if does_set_exist == "Y":
+            does_set_exist = input("Is there a set? I need food. (Answer 'y' for yes, 'n' for no.) ")    # - user says whether there's a set                
+            if str.lower(does_set_exist) == "y":
                 selected_indices = []
                 for _ in range(self.SET_LENGTH):
                     selected_indices.append(int(input("Feed me a card. I'm so hungry! ")) - 1)    # - if yes: evaluate chosen cards    
