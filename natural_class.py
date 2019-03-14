@@ -18,6 +18,7 @@ class Game:
         self.players = players
         self.NUM_STARTING_CARDS = 12
         self.SET_LENGTH = 3
+        self.game_in_progress = True
 
     def claim_set(self, selected_cards):
         if is_set(selected_cards):# - if correct:
@@ -28,8 +29,10 @@ class Game:
             # TODO: What if there's more than one player?
             self.players[0].change_score(self.SET_LENGTH)
             # - deal cards
-            # TODO?  - if < 3 cards in play area, end game
-            self.deal_limit(self.deck)                 
+            self.deal_limit(self.deck)
+            if len(self.deck.cards_in_play) < self.SET_LENGTH:
+                self.game_in_progress = False
+            # TODO?  - if < 3 cards in play area, end game                 
         else:    # - if incorrect:
             # - penalise player (track player score)
             self.players[0].change_score(-self.SET_LENGTH)
@@ -39,7 +42,7 @@ class Game:
 
     def play(self):
         self.deal_limit(self.deck)     # - deal 9 cards
-        while True:    # - loop:
+        while self.game_in_progress:    # - loop:
             #TODO: make cards look nicer!
             for i in range(len(self.deck.cards_in_play)):
                 print(str(i + 1) + '. ' + str(self.deck.cards_in_play[i]))
@@ -55,8 +58,19 @@ class Game:
                 self.claim_set(selected_cards)
             #finish this
             else:    # - if no:
-                self.deck.deal_number(self.SET_LENGTH)     # - add 3 cards
-                    # - if no cards to add, end game and declare winner
+                if len(self.deck.undealt_cards) > 0:
+                    self.deck.deal_number(self.SET_LENGTH)
+                else:                    
+                    self.game_in_progress = False
+        scores = [player.score for player in self.players]
+        winners = [player for player in self.players if player.score == max(scores)]
+
+        #winners = [player for player in self.players if player.score == max(self.players, key = lambda player: player.score).score]
+
+        #highest = max(self.players, key = lambda player: player.score)
+        #winners = [player for player in self.players if player.score == highest.score]
+
+        #winners = list(filter(lambda player: player.score == max([x.score for x in self.players]), self.players))
 
 class Deck:
     def __init__(self):
