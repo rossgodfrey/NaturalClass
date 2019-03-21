@@ -62,34 +62,17 @@ class Game:
                     self.deck.deal_number(self.SET_LENGTH)
                 else:                    
                     self.game_in_progress = False
-        max_score = max([p.score for p in self.players])
-        winners = [p for p in self.players if p.score == max_score]
-
-        # winners = [player for player in self.players if player.score == max(self.players, key = lambda player: player.score).score]
-
-        # highest = max(self.players, key = lambda player: player.score)
-        # winners = [player for player in self.players if player.score == highest.score]
-
-        # winners = list(filter(lambda player: player.score == max([x.score for x in self.players]), self.players))
-
-        # best_score = max([player.score for player in self.players])
-        # winners = list(filter(lambda player: player.score == best_score, self.players))
-
-        # highest = max(self.players, key = lambda p: p.score)
-        # winners = list(filter(lambda p: p.score == highest.score, self.players))
-
-        # scores = {player: player.score for player in self.players}
-        # winners = list(filter(lambda player: scores[player] == max(scores), scores))
-
-        # scores = {player: player.score for player in self.players}
-        # winners = [player for player in scores if scores[player] == max(scores.values())]
-
-        # winners = []
-        # for p in self.players:
-        #     if not winners or p.score > winners[0].score:
-        #         winners = [p]
-        #     elif p.score == winners[0].score:
-        #         winners.append(p)
+        players_by_score = sorted(self.players, key = lambda player: player.score, reverse = True)
+        for player in players_by_score:
+            print(f"{player.name}: {player.score}")
+        # Create list of winners
+        winner_names = [players_by_score[0].name]
+        for player in players_by_score[1:]:
+            if player.score == winners[0].score:
+                winner_names.append(player.name)
+            else:
+                break      
+        print(f"Congratulations, {' and '.join(winner_names)}! You won!")
 
 class Deck:
     def __init__(self):
@@ -140,5 +123,8 @@ class Card:
 
 
 if __name__ == "__main__":
-    Game(Deck(), [Player(0, 'Tomo-Ross')]).play()
+    STARTING_SCORE = 0
+    player_names = input("Who's there? (Enter player names separated by commas.)").split(',')
+    players = [Player(STARTING_SCORE, name) for name in player_names]
+    Game(Deck(), players).play()
 
