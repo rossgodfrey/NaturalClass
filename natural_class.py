@@ -62,15 +62,34 @@ class Game:
                     self.deck.deal_number(self.SET_LENGTH)
                 else:                    
                     self.game_in_progress = False
-        scores = [player.score for player in self.players]
-        winners = [player for player in self.players if player.score == max(scores)]
+        max_score = max([p.score for p in self.players])
+        winners = [p for p in self.players if p.score == max_score]
 
-        #winners = [player for player in self.players if player.score == max(self.players, key = lambda player: player.score).score]
+        # winners = [player for player in self.players if player.score == max(self.players, key = lambda player: player.score).score]
 
-        #highest = max(self.players, key = lambda player: player.score)
-        #winners = [player for player in self.players if player.score == highest.score]
+        # highest = max(self.players, key = lambda player: player.score)
+        # winners = [player for player in self.players if player.score == highest.score]
 
-        #winners = list(filter(lambda player: player.score == max([x.score for x in self.players]), self.players))
+        # winners = list(filter(lambda player: player.score == max([x.score for x in self.players]), self.players))
+
+        # best_score = max([player.score for player in self.players])
+        # winners = list(filter(lambda player: player.score == best_score, self.players))
+
+        # highest = max(self.players, key = lambda p: p.score)
+        # winners = list(filter(lambda p: p.score == highest.score, self.players))
+
+        # scores = {player: player.score for player in self.players}
+        # winners = list(filter(lambda player: scores[player] == max(scores), scores))
+
+        # scores = {player: player.score for player in self.players}
+        # winners = [player for player in scores if scores[player] == max(scores.values())]
+
+        # winners = []
+        # for p in self.players:
+        #     if not winners or p.score > winners[0].score:
+        #         winners = [p]
+        #     elif p.score == winners[0].score:
+        #         winners.append(p)
 
 class Deck:
     def __init__(self):
