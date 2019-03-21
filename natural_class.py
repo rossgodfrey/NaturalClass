@@ -20,28 +20,28 @@ class Game:
         self.SET_LENGTH = 3
         self.game_in_progress = True
 
-    def claim_set(self, selected_cards):
+    def claim_set(self, selected_cards, player):
         if is_set(selected_cards):# - if correct:
             # - remove those cards
             for card in selected_cards:
                 self.deck.cards_in_play.remove(card)
             # - track player score            
             # TODO: What if there's more than one player?
-            self.players[0].change_score(self.SET_LENGTH)
+            player.change_score(self.SET_LENGTH)
             # - deal cards
-            self.deal_limit(self.deck)
+            self.deal_limit()
             if len(self.deck.cards_in_play) < self.SET_LENGTH:
                 self.game_in_progress = False
             # TODO?  - if < 3 cards in play area, end game                 
         else:    # - if incorrect:
             # - penalise player (track player score)
-            self.players[0].change_score(-self.SET_LENGTH)
+            player.change_score(-self.SET_LENGTH)
 
-    def deal_limit(self, deck):
+    def deal_limit(self):
         self.deck.deal_number(max(self.NUM_STARTING_CARDS - len(self.deck.cards_in_play), 0))
 
     def play(self):
-        self.deal_limit(self.deck)     # - deal 9 cards
+        self.deal_limit()     # - deal 9 cards
         while self.game_in_progress:    # - loop:
             #TODO: make cards look nicer!
             for i in range(len(self.deck.cards_in_play)):
@@ -49,13 +49,16 @@ class Game:
             #TODO: handle errors
             does_set_exist = input("Is there a set? I need food. (Answer 'y' for yes, 'n' for no.) ")    # - user says whether there's a set                
             if str.lower(does_set_exist) == "y":
+                input_name = input("Who are you?")
+                current_player = next(player for player in self.players if player.name==input_name) # - returns the first thing that satisfies the condition
+                #TODO: What if the name is not found?
                 selected_indices = []
                 for _ in range(self.SET_LENGTH):
                     selected_indices.append(int(input("Feed me a card. I'm so hungry! ")) - 1)    # - if yes: evaluate chosen cards    
                 selected_cards = []    
                 for integer in selected_indices:
                     selected_cards.append(self.deck.cards_in_play[integer])
-                self.claim_set(selected_cards)
+                self.claim_set(selected_cards,current_player)
             #finish this
             else:    # - if no:
                 if len(self.deck.undealt_cards) > 0:
@@ -124,7 +127,7 @@ class Card:
 
 if __name__ == "__main__":
     STARTING_SCORE = 0
-    player_names = input("Who's there? (Enter player names separated by commas.)").split(',')
+    player_names = input("Who's there? (Enter player names separated by commas.)").split(',') #TODO: Make sure user is not entering multiples of the same name
     players = [Player(STARTING_SCORE, name) for name in player_names]
     Game(Deck(), players).play()
 
