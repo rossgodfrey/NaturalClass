@@ -4,7 +4,9 @@ from natural_class import is_set, Card, Game, Deck, Player
 class TestClaimSet(unittest.TestCase):
 
     def test_claimSet_isRealSet_differentCardsInPlay(self):
-        game = Game(Deck(), [Player(0, "Tomo-Ross")])
+        orig_score = 0
+        player = Player(orig_score, "Tomo-Ross")
+        game = Game(Deck(), [player])
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('empty', 'red', 'diamond', '3'),
                                    Card('striped', 'purple', 'squiggle', '1'),
@@ -13,11 +15,13 @@ class TestClaimSet(unittest.TestCase):
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
                                    Card('striped', 'red', 'squiggle', '1')]
-        game.claim_set(old_cards_in_play[:game.SET_LENGTH])
+        game.claim_set(old_cards_in_play[:game.SET_LENGTH], player)
         self.assertNotEqual(set(old_cards_in_play), set(game.deck.cards_in_play))
 
     def test_claimSet_isNotRealSet_sameCardsInPlay(self):
-        game = Game(Deck(), [Player(0, "Tomo-Ross")])
+        orig_score = 0
+        player = Player(orig_score, "Tomo-Ross")
+        game = Game(Deck(), [player])
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('striped', 'red', 'oval', '3'),
                                    Card('filled', 'purple', 'oval', '1'),
@@ -26,12 +30,13 @@ class TestClaimSet(unittest.TestCase):
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
                                    Card('striped', 'red', 'squiggle', '1')]
-        game.claim_set(old_cards_in_play[:game.SET_LENGTH])
+        game.claim_set(old_cards_in_play[:game.SET_LENGTH], player)
         self.assertEqual(set(old_cards_in_play), set(game.deck.cards_in_play))
 
     def test_claimSet_isRealSet_scoreGoesUpByLengthOfSet(self):
         orig_score = 0
-        game = Game(Deck(), [Player(orig_score, "Tomo-Ross")])
+        player = Player(orig_score, "Tomo-Ross")
+        game = Game(Deck(), [player])
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('empty', 'red', 'diamond', '3'),
                                    Card('striped', 'purple', 'squiggle', '1'),
@@ -39,12 +44,13 @@ class TestClaimSet(unittest.TestCase):
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
                                    Card('striped', 'red', 'squiggle', '1')]
-        game.claim_set(game.deck.cards_in_play[:game.SET_LENGTH])
+        game.claim_set(game.deck.cards_in_play[:game.SET_LENGTH], player)
         self.assertEqual(orig_score + game.SET_LENGTH, game.players[0].score)
 
     def test_claimSet_isNotRealSetWithOrigScoreAboveSetLength_scoreGoesDownByLengthOfSet(self):
         orig_score = 10
-        game = Game(Deck(), [Player(orig_score, "Tomo-Ross")])
+        player = Player(orig_score, "Tomo-Ross")
+        game = Game(Deck(), [player])
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('striped', 'red', 'oval', '3'),
                                    Card('filled', 'purple', 'oval', '1'),
@@ -52,12 +58,13 @@ class TestClaimSet(unittest.TestCase):
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
                                    Card('striped', 'red', 'squiggle', '1')]
-        game.claim_set(game.deck.cards_in_play[:game.SET_LENGTH])
+        game.claim_set(game.deck.cards_in_play[:game.SET_LENGTH], player)
         self.assertEqual(orig_score - game.SET_LENGTH, game.players[0].score)
 
     def test_claimSet_isNotRealSetWithOrigScoreZero_scoreStaysAtZero(self):
         orig_score = 0
-        game = Game(Deck(), [Player(orig_score, "Tomo-Ross")])
+        player = Player(orig_score, "Tomo-Ross")
+        game = Game(Deck(), [player])
         game.deck.cards_in_play = [Card('filled', 'green', 'oval', '2'),
                                    Card('striped', 'red', 'oval', '3'),
                                    Card('filled', 'purple', 'oval', '1'),
@@ -65,7 +72,7 @@ class TestClaimSet(unittest.TestCase):
         game.deck.undealt_cards = [Card('filled', 'purple', 'oval', '2'),
                                    Card('empty', 'purple', 'diamond', '3'),
                                    Card('striped', 'red', 'squiggle', '1')]
-        game.claim_set(game.deck.cards_in_play[:game.SET_LENGTH])
+        game.claim_set(game.deck.cards_in_play[:game.SET_LENGTH], player)
         self.assertEqual(orig_score, game.players[0].score)
 
 
